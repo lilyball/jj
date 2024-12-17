@@ -29,6 +29,7 @@ mod edit;
 mod evolog;
 mod file;
 mod fix;
+mod gerrit;
 #[cfg(feature = "git")]
 mod git;
 mod help;
@@ -104,6 +105,8 @@ enum Command {
     File(file::FileCommand),
     Fix(fix::FixArgs),
     #[cfg(feature = "git")]
+    #[command(subcommand)]
+    Gerrit(gerrit::GerritCommand),
     #[command(subcommand)]
     Git(git::GitCommand),
     Help(help::HelpArgs),
@@ -188,6 +191,7 @@ pub fn run_command(ui: &mut Ui, command_helper: &CommandHelper) -> Result<(), Co
         Command::Edit(args) => edit::cmd_edit(ui, command_helper, args),
         Command::File(args) => file::cmd_file(ui, command_helper, args),
         Command::Fix(args) => fix::cmd_fix(ui, command_helper, args),
+        Command::Gerrit(sub_args) => gerrit::cmd_gerrit(ui, command_helper, sub_args),
         #[cfg(feature = "git")]
         Command::Git(args) => git::cmd_git(ui, command_helper, args),
         Command::Help(args) => help::cmd_help(ui, command_helper, args),
